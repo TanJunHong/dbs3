@@ -7,10 +7,10 @@ const Navbar = () => {
   return (
     <div>
       <Link to="/">Home</Link>
-   
       <Link to="/schedule">Schedule</Link>
       <Link to="/addschedule">Add Schedule</Link>
       <Link to="/update">Update Email</Link>
+      
       {currentUser ? <Link to="/login">Logout</Link> : null}
       
     </div>
