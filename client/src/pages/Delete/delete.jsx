@@ -32,10 +32,6 @@ const Delete = () => {
         console.log(inputs)
         const res = await axios.post("http://localhost:5000/delete_transaction", formData);
 
-        // Logic
-        // If 'Status' = False, alert('Invalid Transaction ID/Account ID')
-        // If 'Not Future Transaction' = True, alert('Transaction has already completed')
-
         if ("Status" in res.data) {
             if (res.data["Status"]) {
                 console.log(JSON.stringify(res.data));

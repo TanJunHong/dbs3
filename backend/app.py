@@ -153,12 +153,6 @@ def update_user() -> Response:
     myConnection.commit()
     return jsonify({"success": True})
 
-@app.route(rule="/", methods=["POST"])
-def delete_transaction() -> Response:
-    cols: list = []
-
-    return jsonify({"account_info": cols})
-
 @app.route(rule="/delete_transaction", methods=["POST"])
 def delete_transaction() -> Response:
     print(request.form)
@@ -167,9 +161,6 @@ def delete_transaction() -> Response:
     transaction_id = request.form.get('transaction_id')
     account_id = request.form.get('account_id')
     print(transaction_id, account_id)
-
-    # transaction_id = 6
-    # account_id = 621156213
 
     dict = {}
     cur.execute('''SELECT * FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s''', (transaction_id, account_id)) 
