@@ -14,7 +14,7 @@ def hello():
 app: Flask = Flask(__name__)
 # CORS(app)
 
-myConnection = pymysql.connect(host="localhost", user="root", passwd="yangjing", db="bank")
+myConnection = pymysql.connect(host="localhost", user="root", passwd="1234", db="bank")
 
 
 @app.route(rule='/login', methods=['GET'])
