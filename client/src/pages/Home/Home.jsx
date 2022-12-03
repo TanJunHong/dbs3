@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
+import Login from "../Login/Login";
 
 const Home = () => {
 
@@ -47,7 +48,7 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <Link to="/login">Back to Login</Link>
+          <Login/>
         </div>
       )}
     </>
