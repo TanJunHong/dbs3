@@ -76,25 +76,47 @@ def get_transaction_details(user: str = "AssociateDBS") -> Response:
     return jsonify(lst)
 
 
-# @app.route(rule="/", methods=["POST"])
-# def insert_transactions() -> Response:
-#     cols: list = []
+@app.route(rule="/", methods=["POST"])
+def insert_transactions() -> Response:
+    cols: list = []
 
-#     return jsonify({"account_info": cols})
-
-
-# @app.route(rule="/", methods=["POST"])
-# def delete_transaction() -> Response:
-#     cols: list = []
-
-#     return jsonify({"account_info": cols})
+    return jsonify({"account_info": cols})
 
 
-# @app.route(rule="/", methods=["POST"])
-# def get_list_of_users() -> Response:
-#     cols: list = []
+@app.route(rule="/delete_transaction", methods=["GET","POST"])
+def delete_transaction() -> Response:
+    cur = myConnection.cursor()
 
-#     return jsonify({"account_info": cols})
+    #transaction_id = request.form.get('transaction_id')
+    #account_id = request.form.get('account_id')
+
+    transaction_id = 6
+    account_id = 621156213
+
+    cur.execute('''DELETE FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s AND Date > GETDATE()''', (transaction_id, account_id))
+
+    field_names = [i[0] for i in cur.description]
+
+    lst = []
+
+    for row in cur.fetchall():
+        dict = {}
+        for i in range(len(field_names)):
+            if isinstance(row[i], (bytes, bytearray)):
+                dict[field_names[i]] = row[i] != b'\x00'
+                continue
+
+            dict[field_names[i]] = row[i]
+        lst.append(dict)
+
+    return jsonify(lst)
+
+
+@app.route(rule="/", methods=["POST"])
+def get_list_of_users() -> Response:
+    cols: list = []
+
+    return jsonify({"account_info": cols})
 
 
 if __name__ == "__main__":
