@@ -27,23 +27,31 @@ def login():
         return f"Done!!"
 
 
-@app.route(rule="/get_account_info", methods=["POST"])
-def get_account_info(user: str) -> Response:
+@app.route(rule="/get_account_info", methods=["GET"])
+def get_account_info(user: str = "AssociateDBS") -> Response:
     cur = myConnection.cursor()
 
-    cur.execute(''' SELECT * FROM user INNER JOIN bankaccount on user.UserID = bankaccount.UserID WHERE Username = %s''', user)
+    cur.execute(
+        ''' SELECT * FROM user INNER JOIN bankaccount on user.UserID = bankaccount.UserID WHERE Username = %s''', user)
 
-    for firstname, lastname in cur.fetchall():
-        print(firstname, lastname)
+    for row in cur.fetchall():
+        print(row)
 
     return jsonify({"account_info": "test"})
 
 
-@app.route(rule="/", methods=["POST"])
-def get_transaction_details() -> Response:
-    cols: list = []
+@app.route(rule="/get_transaction_details", methods=["GET"])
+def get_transaction_details(user: str = "AssociateDBS") -> Response:
+    cur = myConnection.cursor()
 
-    return jsonify({"account_info": cols})
+    cur.execute(
+        ''' SELECT * FROM user INNER JOIN bankaccount on user.UserID = bankaccount.UserID 
+        INNER JOIN scheduledtransactions on bankaccount.AccountID = scheduledtransactions.AccountID WHERE Username = %s''', user)
+
+    for row in cur.fetchall():
+        print(row)
+
+    return jsonify({"account_info": "test"})
 
 
 @app.route(rule="/", methods=["POST"])
