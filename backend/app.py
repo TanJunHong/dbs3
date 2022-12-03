@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, Response, jsonify, request
 from flask_mysqldb import MySQL
+from flask_cors import CORS
 
 app = Flask(__name__)
 
@@ -28,44 +29,48 @@ def login():
         cursor.close()
         return f"Done!!"
 
-@app.route(rule="/", methods=["POST"])
+
+@app.route(rule="/get_account_info", methods=["POST"])
 def get_account_info(user: str) -> Response:
     cursor = mysql.connection.cursor()
-    cursor.execute(''' SELECT * FROM user INNER JOIN bankaccount on user.UserID = bankaccount.UserID WHERE Username = %s''',
-                   user)
-    mysql.connection.commit()
+    cursor.execute(
+        ''' SELECT * FROM user INNER JOIN bankaccount on user.UserID = bankaccount.UserID WHERE Username = %s''',
+        user)
+    result = cursor.fetchall()
+    # mysql.connection.commit()
     cursor.close()
     cols: list = []
 
     return jsonify({"account_info": cols})
 
+
 @app.route(rule="/", methods=["POST"])
 def get_transaction_details() -> Response:
-
     cols: list = []
 
     return jsonify({"account_info": cols})
+
 
 @app.route(rule="/", methods=["POST"])
 def insert_transactions() -> Response:
-
     cols: list = []
 
     return jsonify({"account_info": cols})
+
 
 @app.route(rule="/", methods=["POST"])
 def delete_transaction() -> Response:
-
     cols: list = []
 
     return jsonify({"account_info": cols})
+
 
 @app.route(rule="/", methods=["POST"])
 def get_list_of_users() -> Response:
-
     cols: list = []
 
     return jsonify({"account_info": cols})
+
 
 if __name__ == "__main__":
     mysql = MySQL(app)
