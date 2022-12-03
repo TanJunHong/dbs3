@@ -30,7 +30,7 @@ const Schedule = () => {
   return (
     <div>
       <Navbar/>
-      <Container component="main" maxWidth="s">
+      <Container component="main" maxWidth="sm">
         <TableContainer>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>

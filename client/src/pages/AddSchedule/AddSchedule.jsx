@@ -38,15 +38,15 @@ const handleSubmit = async (e) => {
      <form>
          <TextField type="int" variant="outlined" margin="normal" required fullWidth id="TransactionID"
                     inputProps={{title: "TransactionID"}}
-                    label="TransactionID" name="TransactionID" autoComplete="TransactionID" autoFocus
+                    label="Transaction ID" name="TransactionID" autoComplete="TransactionID" autoFocus
                     onChange={handleChange}/>
          <TextField type="int" variant="outlined" margin="normal" required fullWidth id="AccountID"
                     inputProps={{title: "AccountID"}}
-                    label="AccountID" name="AccountID" autoComplete="AccountID" autoFocus
+                    label="Account ID" name="AccountID" autoComplete="AccountID" autoFocus
                     onChange={handleChange}/>
          <TextField type="int" variant="outlined" margin="normal" required fullWidth id="ReceivingAccountID"
                     inputProps={{title: "ReceivingAccountID"}}
-                    label="ReceivingAccountID" name="ReceivingAccountID" autoComplete="ReceivingAccountID" autoFocus
+                    label="Receiving Account ID" name="ReceivingAccountID" autoComplete="ReceivingAccountID" autoFocus
                     onChange={handleChange}/>
          <TextField type="date" variant="outlined" margin="normal" required fullWidth id="Date"
                     inputProps={{title: "Date"}}
@@ -54,7 +54,7 @@ const handleSubmit = async (e) => {
                     onChange={handleChange}/>
          <TextField type="number" variant="outlined" margin="normal" required fullWidth id="TransactionAmount"
                     inputProps={{title: "TransactionAmount"}}
-                    label="TransactionID" name="TransactionAmount" autoComplete="TransactionAmount" autoFocus
+                    label="Transaction Amount" name="TransactionAmount" autoComplete="TransactionAmount" autoFocus
                     onChange={handleChange}/>
          <TextField type="text" variant="outlined" margin="normal" required fullWidth id="Comment"
                     inputProps={{title: "Comment"}}

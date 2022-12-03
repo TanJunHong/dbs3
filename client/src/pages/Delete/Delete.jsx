@@ -54,11 +54,11 @@ const Delete = () => {
           <form onSubmit={handleSubmit}>
               <TextField type="text" variant="outlined" margin="normal" required fullWidth id="transaction_id"
                          inputProps={{title: "transaction id"}}
-                         label="transaction_id" name="transaction_id" autoComplete="transaction_id" autoFocus
+                         label="Transaction ID" name="transaction_id" autoComplete="transaction_id" autoFocus
                          onChange={handleChange}/>
               <TextField variant="outlined" margin="normal" required fullWidth name="account_id" label="account_id"
                          inputProps={{title: "account id"}}
-                         type="account_id" id="account_id" autoComplete="current-password"
+                         type="Account ID" id="account_id" autoComplete="current-password"
                          onChange={handleChange}/>
               <Button type="delete" fullWidth variant="contained" color="primary"
                       title="delete">
