@@ -1,20 +1,40 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Button from './NavBtn'
-import {useLocation} from 'react-router-dom'
+import React from 'react';
+import {
+  Nav,
+  NavLink,
+  Bars,
+  NavMenu,
+  NavBtn,
+  NavBtnLink
+} from './NavBtn';
 
 const Navbar = () => {
-  const location = useLocation()
   return (
-    <header className='header'>
-      <h1 >{title}</h1>
-      {location.pathname === '/' && (
-        <Button 
-            text='Home'
-            onClick={onAdd}
-        />
-      )}
-    </header>
+    <>
+      <Nav>
+        <Bars />
+        <NavMenu>
+          <NavLink to='/' activeStyle>
+            Home
+          </NavLink>
+          <NavLink to='/update' activeStyle>
+            Update
+          </NavLink>
+          <NavLink to='/schedule' activeStyle>
+            Schedule
+          </NavLink>
+          <NavLink to='/logout' activeStyle>
+            Logout
+          </NavLink>
+
+          {/* Second Nav */}
+          {/* <NavBtnLink to='/sign-in'>Sign In</NavBtnLink> */}
+        </NavMenu>
+        <NavBtn>
+          <NavBtnLink to='/signin'>Sign In</NavBtnLink>
+        </NavBtn>
+      </Nav>
+    </>
   );
 };
 
