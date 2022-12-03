@@ -119,7 +119,7 @@ def insert_transactions() -> Response:
     return jsonify({"success": True})
 
 
-@app.route(rule="/delete_transaction", methods=["GET","POST"])
+@app.route(rule="/delete_transaction", methods=["POST"])
 def delete_transaction() -> Response:
     print(request.form)
     cur = myConnection.cursor()
@@ -128,30 +128,27 @@ def delete_transaction() -> Response:
     account_id = request.form.get('account_id')
     print(transaction_id, account_id)
 
-    #transaction_id = 6
-    #account_id = 621156213
+    # transaction_id = 6
+    # account_id = 621156213
+
+    dict = {}
+    cur.execute('''SELECT * FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s''', (transaction_id, account_id)) 
+
+    if cur.rowcount < 1:
+        dict['Status'] = False
+        return jsonify(dict)
 
     cur.execute('''DELETE FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s AND Date > NOW()''', (transaction_id, account_id))
+    myConnection.commit()
 
-    cur.execute('''SELECT * FROM ScheduledTransactions''')
+    cur.execute('''SELECT * FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s''', (transaction_id, account_id))  
 
-    field_names = [i[0] for i in cur.description]
-
-    lst = []
-
-    for row in cur.fetchall():
-        dict = {}
-        for i in range(len(field_names)):
-            if isinstance(row[i], (bytes, bytearray)):
-                dict[field_names[i]] = row[i] != b'\x00'
-                continue
-
-            dict[field_names[i]] = row[i]
-        lst.append(dict)
+    if cur.rowcount < 1:
+        dict['Status'] = True
+    else:
+        dict['Not Future Transaction'] = True
     
-    print(lst)
-
-    return jsonify({})
+    return jsonify(dict)
 
 @app.route(rule="/", methods=["POST"])
 def get_list_of_users() -> Response:

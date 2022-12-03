@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import './delete.css'
 import {AuthContext} from "../../context/authContext";
+import axios from "axios";
 
 const Delete = () => {
     const [err, setError] = useState(null)
@@ -14,31 +15,37 @@ const Delete = () => {
   
       const { login } = useContext(AuthContext);
    const navigate = useNavigate()
+
+   const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null
+  );
   
     const handleChange = (e) => {
       setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
     const handleSubmit = async (e) => {
         e.preventDefault()
-    
-          const formData = new FormData();
-          formData.append("transaction_id", inputs.transaction_id);
-          formData.append("account_id", inputs.account_id);
-    
-        try {
-            const response = await fetch('http://localhost:5000/delete_transactions', {
-                method: 'POST',
-                body: formData
-            });
-          //await login(inputs)
-            const data = await response.json()
-            console.log(data);
-            if (data.status) {
-                navigate("/home");
+
+        const formData = new FormData();
+        formData.append("transaction_id", inputs.transaction_id);
+        formData.append("account_id", inputs.account_id);
+        console.log(inputs)
+        const res = await axios.post("http://localhost:5000/delete_transaction", formData);
+
+        // Logic
+        // If 'Status' = False, alert('Invalid Transaction ID/Account ID')
+        // If 'Not Future Transaction' = True, alert('Transaction has already completed')
+
+        if ("Status" in res.data) {
+            if (res.data["Status"]) {
+                console.log(JSON.stringify(res.data));
+                alert("Successfully Deleted!");
+                navigate("/");
+            } else {
+                alert("Invalid Transaction ID/Account ID");
             }
-        } catch (err) {
-          setError(err)
-            console.log(err)
+        } else if ("Not Future Transaction" in res.data) {
+            alert("Transaction has already completed.")
         }
       };
 
