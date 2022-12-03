@@ -92,6 +92,27 @@ def get_transaction_details(user: str = "AssociateDBS") -> Response:
 
     return jsonify(lst)
 
+@app.route(rule="/get_user_details", methods=["GET"])
+def get_user_details() -> Response:
+    cur = myConnection.cursor()
+
+    cur.execute('''SELECT * FROM user''')
+
+    field_names = [i[0] for i in cur.description]
+
+    lst = []
+
+    for row in cur.fetchall():
+        dict = {}
+        for i in range(len(field_names)):
+            if isinstance(row[i], (bytes, bytearray)):
+                dict[field_names[i]] = row[i] != b'\x00'
+                continue
+
+            dict[field_names[i]] = row[i]
+        lst.append(dict)
+
+    return jsonify(lst)
 
 @app.route(rule="/insert_transactions", methods=["GET"])
 def insert_transactions() -> Response:
@@ -118,6 +139,25 @@ def insert_transactions() -> Response:
 
     return jsonify({"success": True})
 
+@app.route(rule="/update_user", methods=["GET"])
+def update_user() -> Response:
+    userToBeUpdated: str = "'AcerDBS'"
+    fieldsToBeUpdated: str = "Password"
+    newValue: str = "'newPassword'"
+    
+    cur = myConnection.cursor()
+
+    cur.execute(
+        'UPDATE user SET {} = {} WHERE Username = {}'.format(fieldsToBeUpdated, newValue, userToBeUpdated))
+
+    myConnection.commit()
+    return jsonify({"success": True})
+
+@app.route(rule="/", methods=["POST"])
+def delete_transaction() -> Response:
+    cols: list = []
+
+    return jsonify({"account_info": cols})
 
 @app.route(rule="/delete_transaction", methods=["POST"])
 def delete_transaction() -> Response:

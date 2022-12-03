@@ -13,8 +13,8 @@ const Login = () => {
     password: "",
   });
 
-    const { login } = useContext(AuthContext);
- const navigate = useNavigate()
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -23,17 +23,17 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-      const formData = new FormData();
-      formData.append("username", inputs.username);
-      formData.append("password", inputs.password);
-      await login(inputs);
+    const formData = new FormData();
+    formData.append("username", inputs.username);
+    formData.append("password", inputs.password);
+    await login(inputs);
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+      <div>
+        <h1>Login</h1>
         <Container component="main" maxWidth="xs">
-        <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <TextField type="text" variant="outlined" margin="normal" required fullWidth id="username"
                        inputProps={{title: "username"}}
                        label="Username" name="username" autoComplete="username" autoFocus
@@ -44,9 +44,9 @@ const Login = () => {
                        onChange={handleChange}/>
             <Button type="submit" fullWidth variant="contained" color="primary"
                     title="sign-in">
-                Sign In
+              Sign In
             </Button>
-        </form>
+          </form>
         </Container>
       </div>
   )

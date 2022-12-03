@@ -6,6 +6,7 @@ import Home from './pages/Home/Home';
 import Update from './pages/Update/Update';
 import Schedule from './pages/Schedule/Schedule';
 import Delete from './pages/Delete/Delete';
+import AddSchedule from './pages/AddSchedule/AddSchedule';
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
       <Route strict exact path={'/update'} element={<Update/>}></Route>
       <Route strict exact path={'/schedule'} element={<Schedule/>}></Route>
       <Route strict exact path={'/delete'} element={<Delete/>}></Route>
+      <Route strict exact path={'/addSchedule'} element={<AddSchedule/>}></Route>
+     
     </Routes>
     </div>
   );
