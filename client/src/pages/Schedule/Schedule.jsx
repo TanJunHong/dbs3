@@ -17,15 +17,6 @@ const Schedule = () => {
     };
     fetchAllSchedule();
   }, [])
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(``);
-      window.location.reload()
-    } catch (err) {
-      console.log(err);
-    }
-  };
   
   return (
     <div>

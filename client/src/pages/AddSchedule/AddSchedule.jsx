@@ -1,10 +1,12 @@
 import {Button, Container, TextField} from "@material-ui/core";
 import axios from 'axios';
 import React, { useState } from 'react'
+import {useNavigate} from "react-router-dom";
 import Navbar from '../../components/Navbar/Navbar'
 
 
 const AddSchedule = () => {
+    const navigate = useNavigate()
     const [schedule, setSchedule] = useState({
         TransactionID: "",
         AccountID: "",
@@ -28,6 +30,8 @@ const handleSubmit = async (e) => {
     formData.append("TransactionAmount", schedule.TransactionAmount);
     formData.append("Comment", schedule.Comment);
     const res = await axios.post('http://localhost:5000/insert_transactions', formData)
+    alert("Done!");
+    navigate("/");
 }
 
   return (
