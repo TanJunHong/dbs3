@@ -5,6 +5,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { AuthContext } from "../../context/authContext";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
+import Login from "../Login/Login";
 
 const Home = () => {
 
@@ -12,9 +13,10 @@ const Home = () => {
   useEffect(() => {});
   return (
     <>
-      <Navbar/>
+
       {currentUser ? (
         <div>
+          <Navbar/>
           <h1>Welcome {currentUser.Username}</h1>
           <Container component="main" maxWidth="xs">
           <TableContainer>
@@ -48,10 +50,7 @@ const Home = () => {
 
         </div>
       ) : (
-        <>
-            <h1>You are not logged in!</h1>
-          <Link to="/login">Back to Login</Link>
-        </>
+        <Login/>
       )}
     </>
   );
