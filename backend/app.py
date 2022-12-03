@@ -5,7 +5,7 @@ import pymysql
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def hello():
     return 'Hello, World!'
 
@@ -15,7 +15,7 @@ app: Flask = Flask(__name__)
 
 myConnection = pymysql.connect(host="localhost", user="root", passwd="yangjing", db="bank")
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET'])
 def login():
     if request.method == 'POST':
         name = request.form['name']
@@ -54,25 +54,25 @@ def get_transaction_details(user: str = "AssociateDBS") -> Response:
     return jsonify({"account_info": "test"})
 
 
-@app.route(rule="/", methods=["POST"])
-def insert_transactions() -> Response:
-    cols: list = []
+# @app.route(rule="/", methods=["POST"])
+# def insert_transactions() -> Response:
+#     cols: list = []
 
-    return jsonify({"account_info": cols})
-
-
-@app.route(rule="/", methods=["POST"])
-def delete_transaction() -> Response:
-    cols: list = []
-
-    return jsonify({"account_info": cols})
+#     return jsonify({"account_info": cols})
 
 
-@app.route(rule="/", methods=["POST"])
-def get_list_of_users() -> Response:
-    cols: list = []
+# @app.route(rule="/", methods=["POST"])
+# def delete_transaction() -> Response:
+#     cols: list = []
 
-    return jsonify({"account_info": cols})
+#     return jsonify({"account_info": cols})
+
+
+# @app.route(rule="/", methods=["POST"])
+# def get_list_of_users() -> Response:
+#     cols: list = []
+
+#     return jsonify({"account_info": cols})
 
 
 if __name__ == "__main__":
