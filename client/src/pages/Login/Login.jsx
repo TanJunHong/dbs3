@@ -23,21 +23,21 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+      const formData = new FormData();
+      formData.append("username", inputs.username);
+      formData.append("password", inputs.password);
 
     try {
         const response = await fetch('http://localhost:5000/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: inputs.username,
-                password: inputs.password
-            })
+            body: formData
         });
       //await login(inputs)
-        console.log(response);
-      navigate("/home");
+        const data = await response.json()
+        console.log(data);
+        if (data.status) {
+            navigate("/home");
+        }
     } catch (err) {
       setError(err)
         console.log(err)

@@ -1,5 +1,5 @@
 from flask import Flask, Response, jsonify, request
-# from flask_cors import CORS
+from flask_cors import CORS
 import pymysql
 from datetime import datetime
 
@@ -12,13 +12,17 @@ def hello():
 
 
 app: Flask = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 myConnection = pymysql.connect(host="localhost", user="root", passwd="1234", db="bank")
 
 
-@app.route(rule='/login', methods=['GET'])
-def login(user: str = "AssociateDBS", pw: str = "Whatis2Years"):
+@app.route(rule='/login', methods=['POST'])
+def login():
+    print(request.form)
+    user: str = request.form["username"]
+    pw: str = request.form["password"]
+    print(user, pw)
     cur = myConnection.cursor()
 
     cur.execute(''' SELECT * FROM user WHERE Username = %s and Password = %s''', (user, pw))
