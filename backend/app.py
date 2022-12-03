@@ -16,16 +16,13 @@ app: Flask = Flask(__name__)
 myConnection = pymysql.connect(host="localhost", user="root", passwd="1234", db="bank")
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    if request.method == 'POST':
-        name = request.form['name']
-        age = request.form['age']
-        # cursor = mysql.connection.cursor()
-        # cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''', (name, age))
-        # mysql.connection.commit()
-        # cursor.close()
-        return f"Done!!"
+@app.route(rule='/login', methods=['GET'])
+def login(user: str = "AssociateDBS", pw: str = "Whatis2Years"):
+    cur = myConnection.cursor()
+
+    cur.execute(''' SELECT * FROM user WHERE Username = %s and Password = %s''', (user, pw))
+
+    return jsonify({"status": cur.rowcount > 0})
 
 
 @app.route(rule="/get_account_info", methods=["GET"])
