@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
-const AuthContextProvider = ({children}) => {
+export const AuthContextProvider = ({children}) => {
 
     const [currentUser, setCurrentUser] = useState(
         JSON.parse(localStorage.getItem("user")) || null
@@ -31,3 +31,5 @@ const AuthContextProvider = ({children}) => {
         </AuthContext.Provider>
       );
     };
+
+

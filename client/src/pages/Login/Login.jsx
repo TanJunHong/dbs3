@@ -1,29 +1,33 @@
 import React from 'react'
 import { useState } from 'react'
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
 
 const Login = () => {
-
+  const [err, setError] = useState(null)
   const [inputs, setInputs] = useState({
     username: "",
     password: "",
   });
-
-  const [error, setError] = useState(null)
+  const { login } = useContext(AuthContext);
+ const navigate = useNavigate()
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       await login(inputs)
-      navigate("/logout");
+      navigate("/home");
     } catch (err) {
+      setError(err)
         console.log(err)
     }
   };
-  }
+  
 
   console.log(inputs)
 
