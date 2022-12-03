@@ -15,18 +15,27 @@ const Schedule = () => {
     };
     fetchAllSchedule();
   }, [])
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8800/books/${id}`);
+      window.location.reload()
+    } catch (err) {
+      console.log(err);
+    }
+  };
   
   return (
     <div>
       
       {schedules?.map((schedule) => {
         return (
-          <>
+          <div key={schedule.AccountId}>
           <h2>{schedule.ReceivingAccountID}</h2>
           <h2>{schedule.Date}</h2>
           <h2>{schedule.TransactionAmount}</h2>
           <h2>{schedule.Comment}</h2>
-          </>
+          </div>
         )
       })}
     </div>
