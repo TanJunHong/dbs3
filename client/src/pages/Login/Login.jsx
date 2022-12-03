@@ -8,7 +8,7 @@ const Login = () => {
     password: "",
   });
 
-  const [error, setError] = useState("")
+  const [error, setError] = useState(null)
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -16,6 +16,13 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    try {
+      await login(inputs)
+      navigate("/logout");
+    } catch (err) {
+        console.log(err)
+    }
+  };
   }
 
   console.log(inputs)
@@ -23,11 +30,11 @@ const Login = () => {
   return (
     <div>
       <form>
-        <input required type="text" placeholder='username' name='username' onchange={handleChange}/>
-        <input required type="password" placeholder='password' name='password' onchange={handleChange}/>
+        <input required type="text" placeholder='username' name='username' onChange={handleChange}/>
+        <input required type="password" placeholder='password' name='password' onChange={handleChange}/>
       </form>
-      <button>Login</button>
-      Login hello
+      <button onSubmit={handleSubmit}>Login</button> 
+      {inputs ? <p>{err}</p> : <p> Logged In</p>}
       </div>
   )
 }
