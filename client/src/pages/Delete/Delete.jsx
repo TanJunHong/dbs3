@@ -56,7 +56,7 @@ const Delete = () => {
                          inputProps={{title: "transaction id"}}
                          label="Transaction ID" name="transaction_id" autoComplete="transaction_id" autoFocus
                          onChange={handleChange}/>
-              <TextField variant="outlined" margin="normal" required fullWidth name="account_id" label="account_id"
+              <TextField variant="outlined" margin="normal" required fullWidth name="account_id" label="Account ID"
                          inputProps={{title: "account id"}}
                          type="Account ID" id="account_id" autoComplete="current-password"
                          onChange={handleChange}/>
