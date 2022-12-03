@@ -10,7 +10,7 @@ def hello():
 
 
 app: Flask = Flask(__name__)
-CORS(app)
+# CORS(app)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
