@@ -140,19 +140,20 @@ def insert_transactions() -> Response:
     return jsonify({"success": True})
 
 
-@app.route(rule="/update_user", methods=["GET"])
+@app.route(rule="/update_user", methods=["POST"])
 def update_user() -> Response:
-    userToBeUpdated: str = "'AcerDBS'"
-    fieldsToBeUpdated: str = "Password"
-    newValue: str = "'newPassword'"
+    username = request.form["username"]
+    email = request.form["email"]
+    address = request.form["address"]
 
     cur = myConnection.cursor()
 
     cur.execute(
-        'UPDATE user SET {} = {} WHERE Username = {}'.format(fieldsToBeUpdated, newValue, userToBeUpdated))
+        '''UPDATE user SET Email = %s, Address = %s WHERE Username = %s''', (email, address, username))
 
     myConnection.commit()
     return jsonify({"success": True})
+
 
 @app.route(rule="/delete_transaction", methods=["POST"])
 def delete_transaction() -> Response:
@@ -164,23 +165,27 @@ def delete_transaction() -> Response:
     print(transaction_id, account_id)
 
     dict = {}
-    cur.execute('''SELECT * FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s''', (transaction_id, account_id)) 
+    cur.execute('''SELECT * FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s''',
+                (transaction_id, account_id))
 
     if cur.rowcount < 1:
         dict['Status'] = False
         return jsonify(dict)
 
-    cur.execute('''DELETE FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s AND Date > NOW()''', (transaction_id, account_id))
+    cur.execute('''DELETE FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s AND Date > NOW()''',
+                (transaction_id, account_id))
     myConnection.commit()
 
-    cur.execute('''SELECT * FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s''', (transaction_id, account_id))  
+    cur.execute('''SELECT * FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s''',
+                (transaction_id, account_id))
 
     if cur.rowcount < 1:
         dict['Status'] = True
     else:
         dict['Not Future Transaction'] = True
-    
+
     return jsonify(dict)
+
 
 @app.route(rule="/", methods=["POST"])
 def get_list_of_users() -> Response:

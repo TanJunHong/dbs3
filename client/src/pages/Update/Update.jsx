@@ -6,7 +6,7 @@ const Update = () => {
   return (
     <div>
       <Navbar />
-      Update
+        <h1>Update Email & Address</h1>
       <UpdateEmail />
     </div>
   );

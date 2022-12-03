@@ -49,7 +49,7 @@ const Delete = () => {
     return (
         <>
             <Navbar/>
-        <h1>Delete</h1>
+        <h1>Delete Transaction</h1>
           <Container component="main" maxWidth="xs">
           <form onSubmit={handleSubmit}>
               <TextField type="text" variant="outlined" margin="normal" required fullWidth id="transaction_id"
