@@ -14,7 +14,7 @@ def hello():
 app: Flask = Flask(__name__)
 CORS(app)
 
-myConnection = pymysql.connect(host="localhost", user="root", passwd="1234", db="bank")
+myConnection = pymysql.connect(host="localhost", user="root", passwd="yangjing", db="bank")
 
 
 @app.route(rule='/login', methods=['POST'])
@@ -154,37 +154,33 @@ def update_user() -> Response:
     myConnection.commit()
     return jsonify({"success": True})
 
-
-@app.route(rule="/delete_transaction", methods=["GET", "POST"])
+@app.route(rule="/delete_transaction", methods=["POST"])
 def delete_transaction() -> Response:
+    print(request.form)
     cur = myConnection.cursor()
 
-    # transaction_id = request.form.get('transaction_id')
-    # account_id = request.form.get('account_id')
+    transaction_id = request.form.get('transaction_id')
+    account_id = request.form.get('account_id')
+    print(transaction_id, account_id)
 
-    transaction_id = 6
-    account_id = 621156213
+    dict = {}
+    cur.execute('''SELECT * FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s''', (transaction_id, account_id)) 
 
-    cur.execute(
-        '''DELETE FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s AND Date > GETDATE()''',
-        (transaction_id, account_id))
+    if cur.rowcount < 1:
+        dict['Status'] = False
+        return jsonify(dict)
 
-    field_names = [i[0] for i in cur.description]
+    cur.execute('''DELETE FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s AND Date > NOW()''', (transaction_id, account_id))
+    myConnection.commit()
 
-    lst = []
+    cur.execute('''SELECT * FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s''', (transaction_id, account_id))  
 
-    for row in cur.fetchall():
-        dict = {}
-        for i in range(len(field_names)):
-            if isinstance(row[i], (bytes, bytearray)):
-                dict[field_names[i]] = row[i] != b'\x00'
-                continue
-
-            dict[field_names[i]] = row[i]
-        lst.append(dict)
-
-    return jsonify(lst)
-
+    if cur.rowcount < 1:
+        dict['Status'] = True
+    else:
+        dict['Not Future Transaction'] = True
+    
+    return jsonify(dict)
 
 @app.route(rule="/", methods=["POST"])
 def get_list_of_users() -> Response:
