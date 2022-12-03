@@ -1,3 +1,4 @@
+import {Button, Container, TextField} from "@material-ui/core";
 import axios from 'axios';
 import React, { useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
@@ -19,59 +20,54 @@ const handleChange = (e) => {
 
 const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await axios.post('', schedule)
+    const formData = new FormData();
+    formData.append("TransactionID", schedule.TransactionID);
+    formData.append("AccountID", schedule.AccountID);
+    formData.append("ReceivingAccountID", schedule.ReceivingAccountID);
+    formData.append("Date", schedule.Date);
+    formData.append("TransactionAmount", schedule.TransactionAmount);
+    formData.append("Comment", schedule.Comment);
+    const res = await axios.post('http://localhost:5000/insert_transactions', formData)
 }
 
-console.log(schedule)
   return (
     <div>
         <Navbar/>
         <h1>Schedule a transaction</h1>
+        <Container component="main" maxWidth="xs">
      <form>
-     <input
-          required
-          type="int"
-          placeholder="TransactionID"
-          name="TransactionID"
-          onChange={handleChange}
-        />
-             <input
-          required
-          type="int"
-          placeholder="AccountID"
-          name="AccountID"
-          onChange={handleChange}
-        />
-                     <input
-          required
-          type="int"
-          placeholder="ReceivingAccountID"
-          name="ReceivingAccountID"
-          onChange={handleChange}
-        />
-                     <input
-          required
-          type="int"
-          placeholder="Date"
-          name="Date"
-          onChange={handleChange}
-        />
-                             <input
-          required
-          type="int"
-          placeholder="TransactionAmount"
-          name="TransactionAmount"
-          onChange={handleChange}
-        />
-                             <input
-          required
-          type="int"
-          placeholder="Comment"
-          name="Comment"
-          onChange={handleChange}
-        />
+         <TextField type="int" variant="outlined" margin="normal" required fullWidth id="TransactionID"
+                    inputProps={{title: "TransactionID"}}
+                    label="TransactionID" name="TransactionID" autoComplete="TransactionID" autoFocus
+                    onChange={handleChange}/>
+         <TextField type="int" variant="outlined" margin="normal" required fullWidth id="AccountID"
+                    inputProps={{title: "AccountID"}}
+                    label="AccountID" name="AccountID" autoComplete="AccountID" autoFocus
+                    onChange={handleChange}/>
+         <TextField type="int" variant="outlined" margin="normal" required fullWidth id="ReceivingAccountID"
+                    inputProps={{title: "ReceivingAccountID"}}
+                    label="ReceivingAccountID" name="ReceivingAccountID" autoComplete="ReceivingAccountID" autoFocus
+                    onChange={handleChange}/>
+         <TextField type="date" variant="outlined" margin="normal" required fullWidth id="Date"
+                    inputProps={{title: "Date"}}
+                    label="Date" name="Date" autoComplete="Date" autoFocus
+                    onChange={handleChange}/>
+         <TextField type="number" variant="outlined" margin="normal" required fullWidth id="TransactionAmount"
+                    inputProps={{title: "TransactionAmount"}}
+                    label="TransactionID" name="TransactionAmount" autoComplete="TransactionAmount" autoFocus
+                    onChange={handleChange}/>
+         <TextField type="text" variant="outlined" margin="normal" required fullWidth id="Comment"
+                    inputProps={{title: "Comment"}}
+                    label="Comment" name="Comment" autoComplete="Comment" autoFocus
+                    onChange={handleChange}/>
+         <Button type="submit" fullWidth variant="contained" color="primary" onClick={handleSubmit}
+                 title="Set Transaction">
+             Set Transaction
+         </Button>
      </form>
-     <button onChange={handleSubmit}>Set Transaction</button>
+
+
+        </Container>
     </div>
   )
 }
