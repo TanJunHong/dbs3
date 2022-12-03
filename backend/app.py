@@ -14,7 +14,7 @@ def hello():
 app: Flask = Flask(__name__)
 # CORS(app)
 
-myConnection = pymysql.connect(host="localhost", user="root", passwd="1234", db="bank")
+myConnection = pymysql.connect(host="localhost", user="root", passwd="Foxbat25", db="bank")
 
 
 @app.route(rule='/login', methods=['GET'])
@@ -121,6 +121,19 @@ def insert_transactions() -> Response:
 
     return jsonify({"success": True})
 
+@app.route(rule="/update_user", methods=["GET"])
+def update_user() -> Response:
+    userToBeUpdated: str = "'AcerDBS'"
+    fieldsToBeUpdated: str = "Password"
+    newValue: str = "'newPassword'"
+    
+    cur = myConnection.cursor()
+
+    cur.execute(
+        'UPDATE user SET {} = {} WHERE Username = {}'.format(fieldsToBeUpdated, newValue, userToBeUpdated))
+
+    myConnection.commit()
+    return jsonify({"success": True})
 
 @app.route(rule="/", methods=["POST"])
 def delete_transaction() -> Response:
