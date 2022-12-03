@@ -1,24 +1,28 @@
 from flask import Flask, Response, jsonify, request
-# from flask_cors import CORS
+from flask_cors import CORS
 import pymysql
 from datetime import datetime
 
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def hello():
     return 'Hello, World!'
 
 
 app: Flask = Flask(__name__)
-# CORS(app)
+CORS(app)
 
-myConnection = pymysql.connect(host="localhost", user="root", passwd="Foxbat25", db="bank")
+myConnection = pymysql.connect(host="localhost", user="root", passwd="1234", db="bank")
 
 
-@app.route(rule='/login', methods=['GET'])
-def login(user: str = "AssociateDBS", pw: str = "Whatis2Years"):
+@app.route(rule='/login', methods=['POST'])
+def login():
+    print(request.form)
+    user: str = request.form["username"]
+    pw: str = request.form["password"]
+    print(user, pw)
     cur = myConnection.cursor()
 
     cur.execute(''' SELECT * FROM user WHERE Username = %s and Password = %s''', (user, pw))
@@ -140,6 +144,34 @@ def delete_transaction() -> Response:
     cols: list = []
 
     return jsonify({"account_info": cols})
+
+@app.route(rule="/delete_transaction", methods=["GET","POST"])
+def delete_transaction() -> Response:
+    cur = myConnection.cursor()
+
+    #transaction_id = request.form.get('transaction_id')
+    #account_id = request.form.get('account_id')
+
+    transaction_id = 6
+    account_id = 621156213
+
+    cur.execute('''DELETE FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s AND Date > GETDATE()''', (transaction_id, account_id))
+
+    field_names = [i[0] for i in cur.description]
+
+    lst = []
+
+    for row in cur.fetchall():
+        dict = {}
+        for i in range(len(field_names)):
+            if isinstance(row[i], (bytes, bytearray)):
+                dict[field_names[i]] = row[i] != b'\x00'
+                continue
+
+            dict[field_names[i]] = row[i]
+        lst.append(dict)
+
+    return jsonify(lst)
 
 
 @app.route(rule="/", methods=["POST"])
