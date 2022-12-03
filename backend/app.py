@@ -60,10 +60,21 @@ def get_transaction_details(user: str = "AssociateDBS") -> Response:
         ''' SELECT * FROM user INNER JOIN bankaccount on user.UserID = bankaccount.UserID 
         INNER JOIN scheduledtransactions on bankaccount.AccountID = scheduledtransactions.AccountID WHERE Username = %s''', user)
 
-    for row in cur.fetchall():
-        print(row)
+    field_names = [i[0] for i in cur.description]
 
-    return jsonify({"account_info": "test"})
+    lst = []
+
+    for row in cur.fetchall():
+        dict = {}
+        for i in range(len(field_names)):
+            if isinstance(row[i], (bytes, bytearray)):
+                dict[field_names[i]] = row[i] != b'\x00'
+                continue
+
+            dict[field_names[i]] = row[i]
+        lst.append(dict)
+
+    return jsonify(lst)
 
 
 @app.route(rule="/", methods=["POST"])
