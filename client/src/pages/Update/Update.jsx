@@ -1,13 +1,14 @@
-import React from 'react'
-import Navbar from '../../components/Navbar/Navbar'
+import React from "react";
+import Navbar from "../../components/Navbar/Navbar";
+import UpdateEmail from "../UpdateEmail/UpdateEmail";
 
 const Update = () => {
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       Update
+      <UpdateEmail />
     </div>
-  )
-}
-
-export default Update
+  );
+};
+export default Update;
