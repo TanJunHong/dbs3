@@ -25,9 +25,23 @@ def login():
     print(user, pw)
     cur = myConnection.cursor()
 
-    cur.execute(''' SELECT * FROM user WHERE Username = %s and Password = %s''', (user, pw))
+    cur.execute(''' SELECT * FROM user WHERE Username = %s and Password = %s LIMIT 1''', (user, pw))
 
-    return jsonify({"status": cur.rowcount > 0})
+    if cur.rowcount > 0:
+        field_names = [i[0] for i in cur.description]
+
+        dict = {}
+        row = cur.fetchone()
+        for i in range(len(field_names)):
+            if isinstance(row[i], (bytes, bytearray)):
+                dict[field_names[i]] = row[i] != b'\x00'
+                continue
+
+            dict[field_names[i]] = row[i]
+
+        return jsonify(dict)
+
+    return jsonify({})
 
 
 @app.route(rule="/get_account_info", methods=["GET"])

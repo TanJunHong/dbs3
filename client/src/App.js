@@ -10,7 +10,6 @@ import Delete from './pages/Delete/Delete';
 function App() {
   return (
     <div className="App">
-    <BrowserRouter>
     <Routes>
       <Route strict exact path={'/login'} element={<Login/>}></Route>
       <Route strict exact path={'/'} element={<Home/>}></Route>
@@ -18,7 +17,6 @@ function App() {
       <Route strict exact path={'/schedule'} element={<Schedule/>}></Route>
       <Route strict exact path={'/delete'} element={<Delete/>}></Route>
     </Routes>
-    </BrowserRouter>
     </div>
   );
 }
