@@ -18,7 +18,7 @@ const Schedule = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8800/books/${id}`);
+      await axios.delete(`}`);
       window.location.reload()
     } catch (err) {
       console.log(err);
@@ -38,6 +38,7 @@ const Schedule = () => {
           </div>
         )
       })}
+      <div onSubmit={handleDelete}>Delete Scheduled Transaction</div>
     </div>
   )
 }
