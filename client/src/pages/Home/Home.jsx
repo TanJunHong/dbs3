@@ -7,12 +7,13 @@ import { useContext } from "react";
 const Home = () => {
 
   const { currentUser } = useContext(AuthContext);
+  console.log("curr " + currentUser);
   useEffect(() => {});
   return (
     <>
       {currentUser ? (
         <div>
-          <h1>Welcome {currentUser.user}</h1>
+          <h1>Welcome {currentUser.Username}</h1>
           <h2>AccountType: {currentUser.AccountType}</h2>
           <h2>AccountBalance: {currentUser.AccountBalance} </h2> 
         </div>
