@@ -1,6 +1,7 @@
 from flask import Flask, Response, jsonify, request
 # from flask_cors import CORS
 import pymysql
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -15,16 +16,14 @@ app: Flask = Flask(__name__)
 
 myConnection = pymysql.connect(host="localhost", user="root", passwd="yangjing", db="bank")
 
-@app.route('/login', methods=['GET'])
-def login():
-    if request.method == 'POST':
-        name = request.form['name']
-        age = request.form['age']
-        # cursor = mysql.connection.cursor()
-        # cursor.execute(''' INSERT INTO info_table VALUES(%s,%s)''', (name, age))
-        # mysql.connection.commit()
-        # cursor.close()
-        return f"Done!!"
+
+@app.route(rule='/login', methods=['GET'])
+def login(user: str = "AssociateDBS", pw: str = "Whatis2Years"):
+    cur = myConnection.cursor()
+
+    cur.execute(''' SELECT * FROM user WHERE Username = %s and Password = %s''', (user, pw))
+
+    return jsonify({"status": cur.rowcount > 0})
 
 
 @app.route(rule="/get_account_info", methods=["GET"])
@@ -76,11 +75,30 @@ def get_transaction_details(user: str = "AssociateDBS") -> Response:
     return jsonify(lst)
 
 
-@app.route(rule="/", methods=["POST"])
+@app.route(rule="/insert_transactions", methods=["GET"])
 def insert_transactions() -> Response:
-    cols: list = []
+    now = datetime.now()
+    # account_id: str = request.form["account_id"] or "1"
+    # receiving_account_id: str = request.form["receiving_account_id"] or "2"
+    # date = request.form["date"] or now.strftime('%Y-%m-%d %H:%M:%S')
+    # transaction_amount: float = float(request.form["transaction_amount"]) or 100
+    # comment: str = request.form["comment"] or "hello"
+    transaction_id: int = 200
+    account_id: str = "1"
+    receiving_account_id: str = "2"
+    date = now.strftime('%Y-%m-%d %H:%M:%S')
+    transaction_amount: float = 100
+    comment: str = "hello"
 
-    return jsonify({"account_info": cols})
+    cur = myConnection.cursor()
+
+    cur.execute(
+        ''' INSERT INTO scheduledtransactions (TransactionID, AccountID, ReceivingAccountID, Date, TransactionAmount, Comment)
+        VALUES (%s, %s, %s, %s, %s, %s)''', (transaction_id, account_id, receiving_account_id, date, transaction_amount, comment))
+
+    myConnection.commit()
+
+    return jsonify({"success": True})
 
 
 @app.route(rule="/delete_transaction", methods=["GET","POST"])
