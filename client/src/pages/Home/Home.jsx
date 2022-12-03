@@ -17,7 +17,7 @@ const Home = () => {
       {currentUser ? (
         <div>
           <Navbar/>
-          <h1>Welcome {currentUser.Username}</h1>
+          <h1>Welcome {currentUser.Username} to Internet Banking</h1>
           <Container component="main" maxWidth="xs">
           <TableContainer>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
