@@ -19,29 +19,29 @@ myConnection = pymysql.connect(host="localhost", user="root", passwd="yangjing",
 
 @app.route(rule='/login', methods=['POST'])
 def login():
-    print(request.form)
     user: str = request.form["username"]
     pw: str = request.form["password"]
-    print(user, pw)
     cur = myConnection.cursor()
 
-    cur.execute(''' SELECT * FROM user WHERE Username = %s and Password = %s LIMIT 1''', (user, pw))
+    cur.execute(''' SELECT * FROM user INNER JOIN bankaccount ON bankaccount.UserID = user.UserID WHERE Username = %s and Password = %s''', (user, pw))
 
-    if cur.rowcount > 0:
-        field_names = [i[0] for i in cur.description]
+    lst = []
+    if cur.rowcount < 1:
+        return jsonify({})
+    field_names = [i[0] for i in cur.description]
 
+
+    for row in cur.fetchall():
         dict = {}
-        row = cur.fetchone()
         for i in range(len(field_names)):
             if isinstance(row[i], (bytes, bytearray)):
                 dict[field_names[i]] = row[i] != b'\x00'
                 continue
 
             dict[field_names[i]] = row[i]
+        lst.append(dict)
 
-        return jsonify(dict)
-
-    return jsonify({})
+    return jsonify({"Username": user, "Accounts": lst})
 
 
 @app.route(rule="/get_account_info", methods=["GET"])

@@ -19,6 +19,7 @@ export const AuthContextProvider = ({children}) => {
     const res = await axios.post("http://localhost:5000/login", formData);
     if (Object.keys(res.data).length !== 0) {
       setCurrentUser(res.data);
+      console.log(JSON.stringify(res.data));
       navigate("/");
     } else {
       alert("Invalid Credentials");
@@ -35,7 +36,6 @@ export const AuthContextProvider = ({children}) => {
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
-  console.log(currentUser)
     return (
         <AuthContext.Provider value={{ currentUser, login, logout }}>
           {children}
