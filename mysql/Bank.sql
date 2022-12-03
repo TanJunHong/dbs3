@@ -54,7 +54,7 @@ CREATE TABLE `ScheduledTransactions` (
   `TransactionID` int NOT NULL,
   `AccountID` int NOT NULL,
   `ReceivingAccountID` int DEFAULT NULL,
-  `Date` varchar(255) DEFAULT NULL,
+  `Date` datetime DEFAULT NULL,
   `TransactionAmount` decimal(10,2) DEFAULT NULL,
   `Comment` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`TransactionID`,`AccountID`)
