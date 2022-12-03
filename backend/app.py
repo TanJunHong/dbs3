@@ -14,7 +14,7 @@ def hello():
 app: Flask = Flask(__name__)
 CORS(app)
 
-myConnection = pymysql.connect(host="localhost", user="root", passwd="1234", db="bank")
+myConnection = pymysql.connect(host="localhost", user="root", passwd="yangjing", db="bank")
 
 
 @app.route(rule='/login', methods=['POST'])
@@ -121,10 +121,12 @@ def insert_transactions() -> Response:
 
 @app.route(rule="/delete_transaction", methods=["GET","POST"])
 def delete_transaction() -> Response:
+    print(request.form)
     cur = myConnection.cursor()
 
     transaction_id = request.form.get('transaction_id')
     account_id = request.form.get('account_id')
+    print(transaction_id, account_id)
 
     #transaction_id = 6
     #account_id = 621156213
@@ -146,8 +148,10 @@ def delete_transaction() -> Response:
 
             dict[field_names[i]] = row[i]
         lst.append(dict)
+    
+    print(lst)
 
-    return jsonify(lst)
+    return jsonify({})
 
 @app.route(rule="/", methods=["POST"])
 def get_list_of_users() -> Response:

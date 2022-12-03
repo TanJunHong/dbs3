@@ -8,8 +8,8 @@ import {AuthContext} from "../../context/authContext";
 const Delete = () => {
     const [err, setError] = useState(null)
     const [inputs, setInputs] = useState({
-      transaction_id: "",
-      account_id: "",
+      transaction_id: 0,
+      account_id: 0,
     });
   
       const { login } = useContext(AuthContext);
