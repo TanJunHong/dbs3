@@ -1,6 +1,7 @@
 import {Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import React, { useState } from "react";
 import { useEffect } from "react";
+import Navbar from "../../components/Navbar/Navbar";
 import { AuthContext } from "../../context/authContext";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
@@ -11,6 +12,7 @@ const Home = () => {
   useEffect(() => {});
   return (
     <>
+      <Navbar/>
       {currentUser ? (
         <div>
           <h1>Welcome {currentUser.Username}</h1>
@@ -46,9 +48,10 @@ const Home = () => {
 
         </div>
       ) : (
-        <div>
+        <>
+            <h1>You are not logged in!</h1>
           <Link to="/login">Back to Login</Link>
-        </div>
+        </>
       )}
     </>
   );
