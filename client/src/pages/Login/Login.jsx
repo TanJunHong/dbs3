@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
+import './login.css'
+
 
 const Login = () => {
   const [err, setError] = useState(null)
@@ -32,8 +34,9 @@ const Login = () => {
   console.log(inputs)
 
   return (
-    <div>
-      <form>
+    <div className='login'>
+      <h1>Login</h1>
+      <form classNmae='form'>
         <input required type="text" placeholder='username' name='username' onChange={handleChange}/>
         <input required type="password" placeholder='password' name='password' onChange={handleChange}/>
       </form>
