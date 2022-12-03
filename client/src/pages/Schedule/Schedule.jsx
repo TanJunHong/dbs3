@@ -18,7 +18,7 @@ const Schedule = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`}`);
+      await axios.delete(``);
       window.location.reload()
     } catch (err) {
       console.log(err);
