@@ -105,13 +105,15 @@ def insert_transactions() -> Response:
 def delete_transaction() -> Response:
     cur = myConnection.cursor()
 
-    #transaction_id = request.form.get('transaction_id')
-    #account_id = request.form.get('account_id')
+    transaction_id = request.form.get('transaction_id')
+    account_id = request.form.get('account_id')
 
-    transaction_id = 6
-    account_id = 621156213
+    #transaction_id = 6
+    #account_id = 621156213
 
-    cur.execute('''DELETE FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s AND Date > GETDATE()''', (transaction_id, account_id))
+    cur.execute('''DELETE FROM ScheduledTransactions WHERE TransactionID = %s AND AccountID = %s AND Date > NOW()''', (transaction_id, account_id))
+
+    cur.execute('''SELECT * FROM ScheduledTransactions''')
 
     field_names = [i[0] for i in cur.description]
 
@@ -128,6 +130,7 @@ def delete_transaction() -> Response:
         lst.append(dict)
 
     return jsonify(lst)
+
 
 
 @app.route(rule="/", methods=["POST"])
