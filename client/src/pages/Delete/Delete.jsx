@@ -3,6 +3,7 @@ import React, {useContext} from "react";
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import './delete.css'
+import Navbar from "../../components/Navbar/Navbar";
 import {AuthContext} from "../../context/authContext";
 import axios from "axios";
 
@@ -46,7 +47,8 @@ const Delete = () => {
       };
 
     return (
-        <div>
+        <>
+            <Navbar/>
         <h1>Delete</h1>
           <Container component="main" maxWidth="xs">
           <form onSubmit={handleSubmit}>
@@ -64,7 +66,7 @@ const Delete = () => {
               </Button>
           </form>
           </Container>
-        </div>
+        </>
     )
   }
   
