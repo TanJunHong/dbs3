@@ -23,13 +23,14 @@ def login():
     pw: str = request.form["password"]
     cur = myConnection.cursor()
 
-    cur.execute(''' SELECT * FROM user INNER JOIN bankaccount ON bankaccount.UserID = user.UserID WHERE Username = %s and Password = %s''', (user, pw))
+    cur.execute(
+        ''' SELECT * FROM user INNER JOIN bankaccount ON bankaccount.UserID = user.UserID WHERE Username = %s and Password = %s''',
+        (user, pw))
 
     lst = []
     if cur.rowcount < 1:
         return jsonify({})
     field_names = [i[0] for i in cur.description]
-
 
     for row in cur.fetchall():
         dict = {}
@@ -74,7 +75,8 @@ def get_transaction_details(user: str = "AssociateDBS") -> Response:
 
     cur.execute(
         ''' SELECT * FROM user INNER JOIN bankaccount on user.UserID = bankaccount.UserID 
-        INNER JOIN scheduledtransactions on bankaccount.AccountID = scheduledtransactions.AccountID WHERE Username = %s''', user)
+        INNER JOIN scheduledtransactions on bankaccount.AccountID = scheduledtransactions.AccountID WHERE Username = %s''',
+        user)
 
     field_names = [i[0] for i in cur.description]
 
@@ -91,6 +93,7 @@ def get_transaction_details(user: str = "AssociateDBS") -> Response:
         lst.append(dict)
 
     return jsonify(lst)
+
 
 @app.route(rule="/get_user_details", methods=["GET"])
 def get_user_details() -> Response:
@@ -114,37 +117,35 @@ def get_user_details() -> Response:
 
     return jsonify(lst)
 
-@app.route(rule="/insert_transactions", methods=["GET"])
+
+@app.route(rule="/insert_transactions", methods=["POST"])
 def insert_transactions() -> Response:
-    now = datetime.now()
-    # account_id: str = request.form["account_id"] or "1"
-    # receiving_account_id: str = request.form["receiving_account_id"] or "2"
-    # date = request.form["date"] or now.strftime('%Y-%m-%d %H:%M:%S')
-    # transaction_amount: float = float(request.form["transaction_amount"]) or 100
-    # comment: str = request.form["comment"] or "hello"
-    transaction_id: int = 200
-    account_id: str = "1"
-    receiving_account_id: str = "2"
-    date = now.strftime('%Y-%m-%d %H:%M:%S')
-    transaction_amount: float = 100
-    comment: str = "hello"
+    print(request.form)
+    transaction_id: int = int(request.form["TransactionID"])
+    account_id: int = int(request.form["AccountID"])
+    receiving_account_id: int = int(request.form["ReceivingAccountID"])
+    date = request.form["Date"]
+    transaction_amount: float = float(request.form["TransactionAmount"])
+    comment: str = request.form["Comment"]
 
     cur = myConnection.cursor()
 
     cur.execute(
         ''' INSERT INTO scheduledtransactions (TransactionID, AccountID, ReceivingAccountID, Date, TransactionAmount, Comment)
-        VALUES (%s, %s, %s, %s, %s, %s)''', (transaction_id, account_id, receiving_account_id, date, transaction_amount, comment))
+        VALUES (%s, %s, %s, %s, %s, %s)''',
+        (transaction_id, account_id, receiving_account_id, date, transaction_amount, comment))
 
     myConnection.commit()
 
     return jsonify({"success": True})
+
 
 @app.route(rule="/update_user", methods=["GET"])
 def update_user() -> Response:
     userToBeUpdated: str = "'AcerDBS'"
     fieldsToBeUpdated: str = "Password"
     newValue: str = "'newPassword'"
-    
+
     cur = myConnection.cursor()
 
     cur.execute(

@@ -7,6 +7,7 @@ import UpgradeIcon from '@mui/icons-material/Upgrade';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ScheduleSendIcon from '@mui/icons-material/ScheduleSend';
 
 const Navbar = () => {
   const { logout, currentUser } = useContext(AuthContext);
@@ -24,8 +25,10 @@ const Navbar = () => {
               </Typography>*/}
               <IconButton aria-label="update" color="inherit" onClick={() => navigate("/update")}><UpgradeIcon/></IconButton>
               <IconButton aria-label="schedule" color="inherit" onClick={() => navigate("/schedule")}><ScheduleIcon/></IconButton>
+              <IconButton aria-label="delete" color="inherit" onClick={() => navigate("/addschedule")}><ScheduleSendIcon/></IconButton>
               <IconButton aria-label="delete" color="inherit" onClick={() => navigate("/delete")}><DeleteIcon/></IconButton>
               <IconButton aria-label="logout" color="inherit" onClick={handleLogout}><LogoutIcon/></IconButton>
+
           </Toolbar>
       </AppBar>
     /*<div>
