@@ -131,8 +131,6 @@ def delete_transaction() -> Response:
 
     return jsonify(lst)
 
-
-
 @app.route(rule="/", methods=["POST"])
 def get_list_of_users() -> Response:
     cols: list = []
